@@ -5,3 +5,7 @@
 #form-status.form-error{display:block;margin-top:18px;padding:16px 18px;background:#fff1f0;color:#a12622!important;border:1px solid #f1b5b1;border-radius:8px;font-size:16px;line-height:1.6;text-align:center}
 .contact-form button:disabled{opacity:.65;cursor:not-allowed;transform:none}
 @media(min-width:701px){.footer-grid{grid-template-columns:1fr auto}}
+
+/* Two-column footer after visitor counter removal */
+.footer-grid{grid-template-columns:1.3fr 1fr}
+@media(max-width:700px){.footer-grid{grid-template-columns:1fr}}
