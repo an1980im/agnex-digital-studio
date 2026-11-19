@@ -126,10 +126,13 @@ form?.addEventListener('submit', async (event) => {
       throw new Error(errorMessage);
     }
 
-    if (status) {
-      status.textContent =
-        'Thank you! Your enquiry has been submitted successfully. We will contact you shortly.';
-    }
+   if (status) {
+     status.textContent =
+       '✓ Your enquiry has been submitted successfully! Thank you for contacting AGNEX Digital Studio. We will get back to you shortly.';
+   
+     status.classList.remove('form-error');
+     status.classList.add('form-success');
+   }
 
     form.reset();
 
