@@ -3,7 +3,7 @@
 
 /* ==========================================
    AGNEX DIGITAL STUDIO
-   Website JavaScript
+   FINAL WEBSITE JAVASCRIPT
    ========================================== */
 
 
@@ -71,18 +71,15 @@ form?.addEventListener('submit', async (event) => {
 
   event.preventDefault();
 
-  if (isSubmitting) return;
+  if (isSubmitting || !form.reportValidity()) {
+    return;
+  }
 
-  if (!form.reportValidity()) return;
-
-  const status =
-    document.querySelector('#form-status');
-
-  const submitButton =
-    form.querySelector('[type="submit"]');
+  const status = document.querySelector('#form-status');
+  const submitButton = form.querySelector('[type="submit"]');
 
   const originalButtonText =
-    submitButton?.textContent || 'Send Enquiry';
+    submitButton?.textContent || 'Send Enquiry →';
 
   isSubmitting = true;
 
@@ -93,27 +90,26 @@ form?.addEventListener('submit', async (event) => {
 
   if (status) {
     status.setAttribute('role', 'status');
+    status.setAttribute('aria-live', 'polite');
     status.textContent = 'Submitting your enquiry...';
   }
 
   try {
 
-    const response = await fetch(
-      FORMSPREE_ENDPOINT,
-      {
-        method: 'POST',
-        body: new FormData(form),
-        headers: {
-          'Accept': 'application/json'
-        }
+    const response = await fetch(FORMSPREE_ENDPOINT, {
+      method: 'POST',
+      body: new FormData(form),
+      headers: {
+        'Accept': 'application/json'
       }
-    );
+    });
 
     if (!response.ok) {
 
       let errorMessage = 'Submission failed';
 
       try {
+
         const result = await response.json();
 
         if (Array.isArray(result.errors)) {
@@ -122,8 +118,9 @@ form?.addEventListener('submit', async (event) => {
             .filter(Boolean)
             .join('; ') || errorMessage;
         }
+
       } catch (_) {
-        // Use the generic error message.
+        // Keep the default error message.
       }
 
       throw new Error(errorMessage);
